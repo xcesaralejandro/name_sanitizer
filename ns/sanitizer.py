@@ -1,4 +1,4 @@
-import os, pprint, uuid
+import os, pprint, uuid, platform
 from pathlib import Path
 from ns.cleaner import Cleaner
 
@@ -25,12 +25,20 @@ class Sanitizer():
         for folder in folders:
             name = self.__processName(folder['name'], folder['path'], self.IS_DIR)
             output = "{}{}{}".format(folder['path'], os.path.sep, name)
-            if not os.path.exists(output):
-                os.rename(folder['full_path'], output)
-            else:
-                name = self.__doUniqueName(name, folder['path'])
-                output = "{}{}{}".format(folder['path'], os.path.sep, name)
-                os.rename(folder['full_path'], output)
+            if platform.system() == 'Windows':
+                try:
+                    os.rename(folder['full_path'], output)
+                except FileExistsError:
+                    name = self.__doUniqueName(name, folder['path'])
+                    output = "{}{}{}".format(folder['path'], os.path.sep, name)
+                    os.rename(folder['full_path'], output)
+            else: 
+                if not os.path.exists(output):
+                    os.rename(folder['full_path'], output)
+                else:
+                    name = self.__doUniqueName(name, folder['path'])
+                    output = "{}{}{}".format(folder['path'], os.path.sep, name)
+                    os.rename(folder['full_path'], output)
 
     def __getFolders(self):
         output = []
@@ -47,12 +55,20 @@ class Sanitizer():
         for file in files:
             name = self.__processName(file['name'], file['path'], self.IS_FILE)
             output = "{}{}{}".format(file['path'], os.path.sep, name)
-            if not os.path.exists(output):
-                os.rename(file['full_path'], output)
+            if platform.system() == 'Windows':
+                try:
+                    os.rename(file['full_path'], output)
+                except FileExistsError:
+                    name = self.__doUniqueName(name, file['path'])
+                    output = "{}{}{}".format(file['path'], os.path.sep, name)
+                    os.rename(file['full_path'], output)
             else:
-                name = self.__doUniqueName(name, file['path'])
-                output = "{}{}{}".format(file['path'], os.path.sep, name)
-                os.rename(file['full_path'], output)
+                if not os.path.exists(output):
+                    os.rename(file['full_path'], output)
+                else:
+                    name = self.__doUniqueName(name, file['path'])
+                    output = "{}{}{}".format(file['path'], os.path.sep, name)
+                    os.rename(file['full_path'], output)
 
     def __getFiles(self):
         output = []
