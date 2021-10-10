@@ -9,7 +9,7 @@ At other times we want to have an image repository but the names are very varied
 Let's not forget the good android studio, surely you are already tired of manually renaming the files.
 
 ### Install
-```` pip install name_sanitizer````
+```` pip install name-sanitizer ````
 
 ### Simple usage
 ````python -m ns````
