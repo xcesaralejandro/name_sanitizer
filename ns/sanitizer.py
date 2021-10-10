@@ -25,9 +25,9 @@ class Sanitizer():
         for folder in folders:
             name = self.__processName(folder['name'], folder['path'], self.IS_DIR)
             output = "{}{}{}".format(folder['path'], os.path.sep, name)
-            try:
+            if not os.path.exists(output):
                 os.rename(folder['full_path'], output)
-            except FileExistsError:
+            else:
                 name = self.__doUniqueName(name, folder['path'])
                 output = "{}{}{}".format(folder['path'], os.path.sep, name)
                 os.rename(folder['full_path'], output)
@@ -47,9 +47,9 @@ class Sanitizer():
         for file in files:
             name = self.__processName(file['name'], file['path'], self.IS_FILE)
             output = "{}{}{}".format(file['path'], os.path.sep, name)
-            try:
+            if not os.path.exists(output):
                 os.rename(file['full_path'], output)
-            except FileExistsError:
+            else:
                 name = self.__doUniqueName(name, file['path'])
                 output = "{}{}{}".format(file['path'], os.path.sep, name)
                 os.rename(file['full_path'], output)
