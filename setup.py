@@ -3,7 +3,7 @@ readme = open("./README.md", "r")
 setup(
     name="name_sanitizer",
     packages=["ns"],
-    version = "1.0.1",
+    version = "1.0.2",
     description = "Python script for sanitize files and directories names",
     long_description=readme.read(),
     long_description_content_type="text/markdown",
